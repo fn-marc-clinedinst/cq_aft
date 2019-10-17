@@ -23,30 +23,41 @@ def pytest_addoption(parser):
     )
 
 
+def get_driver(desired_browser):
+    SELENIUM_GRID_IP_ADDRESS = '198.199.86.89'
+
+    if desired_browser == 'chrome':
+        driver = webdriver.Remote(
+            command_executor='http://localhost:4444/wd/hub',
+            desired_capabilities=DesiredCapabilities.CHROME
+        )
+    elif desired_browser == 'firefox':
+        driver = webdriver.Remote(
+            command_executor='http://localhost:4444/wd/hub',
+            desired_capabilities=DesiredCapabilities.FIREFOX
+        )
+    elif desired_browser == 'chrome-remote':
+        driver = webdriver.Remote(
+            command_executor=f'http://{SELENIUM_GRID_IP_ADDRESS}:4444/wd/hub',
+            desired_capabilities=DesiredCapabilities.CHROME
+        )
+    elif desired_browser == 'firefox-remote':
+        driver = webdriver.Remote(
+            command_executor=f'http://{SELENIUM_GRID_IP_ADDRESS}:4444/wd/hub',
+            desired_capabilities=DesiredCapabilities.FIREFOX
+        )
+    else:
+        raise Exception('Something really terrible has happened!')
+
+    return driver
+
+
 @pytest.fixture(scope='session')
 def driver(request):
     config.baseurl = request.config.getoption('--baseurl')
     config.browser = request.config.getoption('--browser')
 
-    _driver = None
-
-    if config.browser == 'chrome':
-        options = Options()
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-setuid-sandbox')
-
-        _driver = webdriver.Remote(
-            command_executor='http://localhost:4444/wd/hub',
-            options=options,
-            desired_capabilities=DesiredCapabilities.CHROME
-        )
-    elif config.browser == 'firefox':
-        _driver = webdriver.Remote(
-            command_executor='http://localhost:4444/wd/hub',
-            desired_capabilities=DesiredCapabilities.FIREFOX
-        )
-    else:
-        pytest.fail(f'Do not recognize the --browser option "{config.browser}." Valid options: chrome, firefox')
+    _driver = get_driver(config.browser)
 
     def _quit():
         _driver.quit()

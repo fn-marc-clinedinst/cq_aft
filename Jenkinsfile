@@ -19,7 +19,7 @@ pipeline {
                 sh '''
                 bash
                 . venv/bin/activate
-                pytest --html=reports/ui_login.html --log-cli-level
+                pytest --browser chrome-remote --html=reports/ui_login.html --log-cli-level
                 '''
             }
             post {
