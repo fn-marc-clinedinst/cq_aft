@@ -1,8 +1,7 @@
 import logging
 
-from pages.base_page import BasePage
-
 from . import locators
+from pages.base_page import BasePage
 
 
 class LoginPage(BasePage):
