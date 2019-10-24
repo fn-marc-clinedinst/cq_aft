@@ -24,7 +24,7 @@ def pytest_addoption(parser):
 
 
 def get_driver(desired_browser):
-    SELENIUM_GRID_IP_ADDRESS = '198.199.86.89'
+    SELENIUM_GRID_IP_ADDRESS = '206.189.181.225'
 
     if desired_browser == 'chrome':
         driver = webdriver.Remote(
