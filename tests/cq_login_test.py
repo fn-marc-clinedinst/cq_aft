@@ -1,6 +1,5 @@
 import logging
 import pytest
-import time
 
 from pages.login_page.page_object import LoginPage
 
