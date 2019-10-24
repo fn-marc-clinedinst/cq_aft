@@ -22,15 +22,10 @@ class TestCQLoginPage:
         logging.info('Verifying that the log in error message is not displayed.')
         assert login_page.log_in_error_is_displayed is False
 
-        time.sleep(2)
         login_page.enter_username('this_is_not_a_real_username@email.com')
-
-        time.sleep(2)
         login_page.enter_password('this_is_not_a_real_password')
 
-        time.sleep(2)
         login_page.click_log_in_button()
 
-        time.sleep(2)
         logging.info('Verifying that the log in error message is displayed.')
         assert login_page.log_in_error_is_displayed
